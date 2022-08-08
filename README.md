@@ -1,2 +1,2 @@
 # pystar
-A project I did at Adobe
+A project we did at Adobe
