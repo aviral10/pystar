@@ -9,6 +9,7 @@ import collections.abc
 import os
 import pandas as pd
 import numpy as np
+from math import isnan
 
 # for pptx
 from pptx import Presentation
@@ -22,7 +23,7 @@ import streamlit.components.v1 as components  # Import Streamlit
 
 # Page header
 st.set_page_config(
-    page_title="pyStAR", page_icon="🥂"
+    page_title="pyStAR", page_icon="data/logo.jpg"
 )
 
 # Removing Streamlit watermark
@@ -35,14 +36,15 @@ hide_streamlit_style = """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 # logo and header
+# <h1 style="font-size: 25px"> Excel to PPT Automation </h1>
 components.html(f"""
     <div style="text-align: right;height: 100%;width:100%;font-family: Adobe Clean;
     margin-top: -20px;
-    
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMzMuNDYgMTE4LjExIj48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2ZhMGYwMDt9PC9zdHlsZT48L2RlZnM+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9Ijg0LjEzIDAgMTMzLjQ2IDAgMTMzLjQ2IDExOC4xMSA4NC4xMyAwIi8+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjQ5LjM3IDAgMCAwIDAgMTE4LjExIDQ5LjM3IDAiLz48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iNjYuNzUgNDMuNTMgOTguMTggMTE4LjExIDc3LjU4IDExOC4xMSA2OC4xOCA5NC4zNiA0NS4xOCA5NC4zNiA2Ni43NSA0My41MyIvPjwvc3ZnPg==);
     background-repeat: no-repeat;
     "> 
         <h1 style="font-size: 50px"> pyStAR 🌠 </h1>
-        <h1 style="font-size: 25px"> Excel to PPT Automation </h1>
+        
     </div>
     <div>
         <hr style="width:100%;text-align:left;margin-left:0;color:black;background-color:black;height: 2px;border-radius: 25px;">
@@ -272,7 +274,7 @@ def end_slide():
     """
     layout = prs.slide_layouts[5]
     slide=prs.slides.add_slide(layout)
-    # slide.shapes.add_picture('data/end.png', 0, 0, prs.slide_width, prs.slide_height)
+    slide.shapes.add_picture('data/end.png', 0, 0, prs.slide_width, prs.slide_height)
 
 
 def commence_ppt_creation():
@@ -378,6 +380,7 @@ if __name__ == "__main__":
                 beginx = int(rows)
                 beginy = convert_excel_col_number(cols)
                 dataframe = get_data(uploaded_file)
+                dataframe = dataframe.loc[:, dataframe.columns.notna()]
                 dataframe = dataframe.reset_index(drop=True)
                 headers = dataframe.columns.tolist()
                 st.session_state['dataframe'] = dataframe
@@ -387,17 +390,45 @@ if __name__ == "__main__":
                 dataframe = st.session_state['dataframe']
                 headers = st.session_state['headers']
             
+            
 
             st.markdown("## Data Preview 📋")
-            display_head = dataframe.head()
             
+            display_head = dataframe.head()
             # Error prone area, The starting address maybe invalid or may contain location that is not valid 
             # or may contain duplicate columns, so handled them here.
             try:
                 st.dataframe(display_head)
+                st.info("Please verify if all the columns titles are displayed in the preview below, if not please re-enter correct starting cell address.")
             except Exception as e:
-                st.error("ERROR: There maybe something wrong with the column names, possibly duplicate column names, please enter correct starting cell address.")
-                st.error(e)
+                # assuming error occured while calculating preview, maybe due to duplicate columns
+                _dict = {}
+                # verify if there are any duplicate column names
+                flag_duplicate = False
+                for ele in display_head:
+                    if ele in _dict: 
+                        _dict[ele] += 1
+                    else:
+                        _dict[ele] = 1
+                dup_col = []
+                _display_head = []
+                for key,value in _dict.items():
+                    if value > 1:
+                        flag_duplicate = True
+                        dup_col.append([key, value])
+                    _display_head.append(key)
+                
+                if flag_duplicate:
+                    st.error("ERROR: There maybe something wrong with the column names, possibly duplicate column names, please enter correct starting cell address or review your data")
+                    show_this = f"The following column(s) are present more than once: "
+                    for ele in dup_col:
+                        show_this += f"{ele[0]} exists {ele[1]} times, "
+                    show_this = show_this[:-2]
+                    st.error(show_this)
+                else:
+                    _display_head = dataframe[_display_head]
+                    st.dataframe(_display_head)
+                    st.info("Please verify if all the columns titles are displayed in the preview below, if not please re-enter correct starting cell address.")
             
             
             st.markdown("## Create Slides 📰")
