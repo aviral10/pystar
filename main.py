@@ -26,18 +26,18 @@ st.set_page_config(
 )
 
 # Removing Streamlit watermark
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
+# hide_streamlit_style = """
+#             <style>
+#             #MainMenu {visibility: hidden;}
+#             footer {visibility: hidden;}
+#             </style>
+#             """
+# st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 
 # logo and header
 # <h1 style="font-size: 25px"> Excel to PPT Automation </h1>
 components.html(f"""
-    <div style="text-align: right;height: 100%;width:100%;font-family: Adobe Clean;
+    <div style="text-align: right;height: 100%;width:100%;font-family: Helvetica;
     margin-top: -20px;
     background-repeat: no-repeat;
     "> 
