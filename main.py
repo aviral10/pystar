@@ -1,5 +1,4 @@
 # UI library
-from msilib.schema import Component
 import streamlit as st
 #for pthon3.10
 import collections 
