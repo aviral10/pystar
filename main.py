@@ -23,7 +23,7 @@ import streamlit.components.v1 as components  # Import Streamlit
 
 # Page header
 st.set_page_config(
-    page_title="pyStAR", page_icon="data/logo.jpg"
+    page_title="pyStAR", page_icon="🥂"
 )
 
 # Removing Streamlit watermark
@@ -40,7 +40,6 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 components.html(f"""
     <div style="text-align: right;height: 100%;width:100%;font-family: Adobe Clean;
     margin-top: -20px;
-    background-image: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMzMuNDYgMTE4LjExIj48ZGVmcz48c3R5bGU+LmNscy0xe2ZpbGw6I2ZhMGYwMDt9PC9zdHlsZT48L2RlZnM+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9Ijg0LjEzIDAgMTMzLjQ2IDAgMTMzLjQ2IDExOC4xMSA4NC4xMyAwIi8+PHBvbHlnb24gY2xhc3M9ImNscy0xIiBwb2ludHM9IjQ5LjM3IDAgMCAwIDAgMTE4LjExIDQ5LjM3IDAiLz48cG9seWdvbiBjbGFzcz0iY2xzLTEiIHBvaW50cz0iNjYuNzUgNDMuNTMgOTguMTggMTE4LjExIDc3LjU4IDExOC4xMSA2OC4xOCA5NC4zNiA0NS4xOCA5NC4zNiA2Ni43NSA0My41MyIvPjwvc3ZnPg==);
     background-repeat: no-repeat;
     "> 
         <h1 style="font-size: 50px"> pyStAR 🌠 </h1>
@@ -274,7 +273,7 @@ def end_slide():
     """
     layout = prs.slide_layouts[5]
     slide=prs.slides.add_slide(layout)
-    slide.shapes.add_picture('data/end.png', 0, 0, prs.slide_width, prs.slide_height)
+    # slide.shapes.add_picture('data/end.png', 0, 0, prs.slide_width, prs.slide_height)
 
 
 def commence_ppt_creation():
