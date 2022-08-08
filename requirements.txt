@@ -1,0 +1,6 @@
+numpy==1.22.4
+openpyxl==3.0.10
+pandas==1.4.2
+streamlit==1.11.0
+streamlit-tags==1.2.8
+python-pptx==0.6.21
