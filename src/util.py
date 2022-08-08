@@ -104,7 +104,7 @@ def add_logo(prs, slide):
 
     slide_idx = prs.slides.index(slide)
     shapes = prs.slides[slide_idx].shapes
-    logo = shapes.add_picture('data/logo.jpg', Cm(32.8), Cm(0.2), Cm(0.72), Cm(1))
+#     logo = shapes.add_picture('data/logo.jpg', Cm(32.8), Cm(0.2), Cm(0.72), Cm(1))
 
 
 def SubElement(parent, tagname, **kwargs):
